@@ -46,10 +46,110 @@ void inserir(No **raiz, Fruta fruta) {
     }
 }
 
-int main(){
-   
+//Função para imprimir a arvore
+void imprimir(No *raiz) {
+    //Se a raiz for nula, a função é encerrada
+    if (raiz != NULL) {
+        printf("FRUTAS\n\n");
+        imprimir(raiz->esquerda);
+        printf("Nome: %s\n", raiz->fruta.nome);
+        printf("Quantidade: %d\n", raiz->fruta.quantidade);
+        printf("Preco: %.2f\n\n", raiz->fruta.preco);
+        printf("\n");
+        imprimir(raiz->direita);
+    }
+}
+
+//Função para buscar um nó na arvore
+int buscar(No *raiz, char nome[]) {
+    //Se a raiz for nula, a função é encerrada
+    if (raiz == NULL) {
+        return 0;
+    } 
+    //Se o nome da fruta for igual ao nome da raiz, a função retorna 1
+    else {
+        //Se o nome da fruta for menor que o nome da raiz, a função é chamada recursivamente para a esquerda
+        if (strcmp(nome, raiz->fruta.nome) == 0) {
+            return 1;
+        }
+        //Se o nome da fruta for menor que o nome da raiz, a função é chamada recursivamente para a esquerda
+        else if (strcmp(nome, raiz->fruta.nome) < 0) {
+            return buscar(raiz->esquerda, nome);
+        } 
+        //Se o nome da fruta for maior que o nome da raiz, a função é chamada recursivamente para a direita
+        else {
+            return buscar(raiz->direita, nome);
+        }
+    }
+}
+
+//função para remover um nó da arvore
+No *remover(No *raiz, char nome[]) {
+    //Se a raiz for nula, a função é encerrada
+    if (raiz == NULL) {
+        return raiz;
+    }
+    //Se o nome da fruta for menor que o nome da raiz, a função é chamada recursivamente para a esquerda
+    if (strcmp(nome, raiz->fruta.nome) < 0) {
+        raiz->esquerda = remover(raiz->esquerda, nome);
+    } 
+    //Se o nome da fruta for maior que o nome da raiz, a função é chamada recursivamente para a direita
+    else if (strcmp(nome, raiz->fruta.nome) > 0) {
+        raiz->direita = remover(raiz->direita, nome);
+    } 
+    //Se o nome da fruta for igual ao nome da raiz, o nó é removido
+    else {
+        //Se a raiz não tiver filhos, a raiz é liberada
+        if (raiz->esquerda == NULL) {
+            No *temp = raiz->direita;
+            free(raiz);
+            return temp;
+        } 
+        //Se a raiz não tiver filhos, a raiz é liberada
+        else if (raiz->direita == NULL) {
+            No *temp = raiz->esquerda;
+            free(raiz);
+            return temp;
+        }
+        //Se a raiz tiver dois filhos, o nó é substituido pelo nó mais a esquerda da subarvore direita
+        No *temp = raiz->direita;
+        //Encontra o nó mais a esquerda da subarvore direita
+        while (temp->esquerda != NULL) {
+            temp = temp->esquerda;
+        }
+        //Copia o nó mais a esquerda da subarvore direita para a raiz
+        strcpy(raiz->fruta.nome, temp->fruta.nome);
+        raiz->direita = remover(raiz->direita, temp->fruta.nome);
+    }
+    //Retorna a raiz
+    return raiz;
+}
+
+//função para modificar um nó da arvore
+void modificar(No *raiz, char nome[], Fruta fruta) {
+    //Se a raiz for nula, a função é encerrada
+    if (raiz == NULL) {
+        return;
+    }
+    //Se o nome da fruta for menor que o nome da raiz, a função é chamada recursivamente para a esquerda
+    if (strcmp(nome, raiz->fruta.nome) < 0) {
+        modificar(raiz->esquerda, nome, fruta);
+    } 
+    //Se o nome da fruta for maior que o nome da raiz, a função é chamada recursivamente para a direita
+    else if (strcmp(nome, raiz->fruta.nome) > 0) {
+        modificar(raiz->direita, nome, fruta);
+    } 
+    //Se o nome da fruta for igual ao nome da raiz, a fruta é modificada
+    else {
+        raiz->fruta = fruta;
+    }
+}
+
+int main() {
+    No *raiz = NULL;
+    Fruta fruta;
     int opcao;
-    
+    char nome[50];
 
     while (1) {
         printf("1. Inserir fruta\n");
@@ -63,19 +163,67 @@ int main(){
 
         switch (opcao) {
             case 1:
-
+                system("clear");
+                printf("Nome: ");
+                scanf("%s", fruta.nome);
+                printf("Quantidade: ");
+                scanf("%d", &fruta.quantidade);
+                printf("Preco: ");
+                scanf("%f", &fruta.preco);
+                inserir(&raiz, fruta);
+                system("clear");
+                printf("Fruta Adicionada com sucesso!\n");
                 break;
             case 2:
-            
+                system("clear");
+                printf("Nome: ");
+                scanf("%s", nome);
+                raiz = remover(raiz, nome);
+                system("clear");
+                //informando se a fruta foi removida ou não
+                if (raiz == NULL) {
+                    printf("Fruta removida com sucesso!!\n");
+                } else
+                {
+                    printf("Fruta nao encontrada\n");
+                }
+                
                 break;
             case 3:
-      
+                system("clear");
+                printf("Nome: ");
+                scanf("%s", nome);
+                if (buscar(raiz, nome)) {
+                    system("clear");
+                    printf("Fruta encontrada\n");
+                    printf("Nome: %s\n", raiz->fruta.nome);
+                    printf("Quantidade: %d\n", raiz->fruta.quantidade);
+                    printf("Preco: %.2f\n", raiz->fruta.preco);
+                } else {
+                    printf("Fruta nao encontrada\n");
+                }
                 break;
             case 4:
-   
+                system("clear");
+                printf("Nome: ");
+                scanf("%s", nome);
+                printf("Nome: ");
+                scanf("%s", fruta.nome);
+                printf("Quantidade: ");
+                scanf("%d", &fruta.quantidade);
+                printf("Preco: ");
+                scanf("%f", &fruta.preco);
+                modificar(raiz, nome, fruta);
+                system("clear");
+                printf("Fruta modificada com sucesso!!\n");
+                printf("Novos dados da fruta:\n");
+                printf("Nome: %s\n", fruta.nome);
+                printf("Quantidade: %d\n", fruta.quantidade);
+                printf("Preco: %.2f\n", fruta.preco);
                 break;
             case 5:
                 system("clear");
+                imprimir(raiz);
                 break;
             case 6:
                 exit(0);
@@ -84,3 +232,9 @@ int main(){
 
     return 0;
 }
+
+//Meta desse projeto: criar um menu para uma barraca de frutas usando arvores binarias
+// 1. Inserir fruta
+// 2. Remover fruta
+// 3. Buscar fruta
+// 4. Modiicar fruta
