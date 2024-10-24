@@ -14,11 +14,11 @@
 
 ![C](https://img.shields.io/badge/C-007ACC?style=for-the-badge&logo=C&logoColor=white)&nbsp;
 
-## Tecnologias utilizadas no projeto
+### Tecnologias utilizadas no projeto
 
--Heap
--Hash
--Arvores Binarias
+- Heap;
+- Hash;
+- Arvores Binarias;
 
 ### Sobre o projeto
 
