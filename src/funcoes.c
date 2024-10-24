@@ -2,16 +2,18 @@
 
 //Função do menu
 void menu(){
-    printf("------------------Barraca de frutas------------------\n");
-    printf("1 - Adicionar vendedor\n");
-    printf("2 - Remover vendedor\n");
-    printf("3 - Buscar vendedor\n");
-    printf("4 - Modificar vendedor\n");
-    printf("5 - Adicionar fruta\n");
-    printf("6 - Remover fruta\n");
-    printf("7 - Buscar fruta\n");
-    printf("8 - Modificar fruta\n");
-    printf("0 - Sair\n");
+    printf("-------------------Barraca de frutas-------------------\n");
+    printf("|                                                     |\n");
+    printf("| 1 - Adicionar vendedor                              |\n");
+    printf("| 2 - Remover vendedor                                |\n");
+    printf("| 3 - Buscar vendedor                                 |\n");
+    printf("| 4 - Modificar vendedor                              |\n");
+    printf("| 5 - Adicionar fruta                                 |\n");
+    printf("| 6 - Remover fruta                                   |\n");
+    printf("| 7 - Buscar fruta                                    |\n");
+    printf("| 8 - Modificar fruta                                 |\n");
+    printf("| 9 - Imprimir vendedores e frutas                    |\n");
+    printf("| 0 - Sair                                            |\n");
 }
 
 //Função que irar criar um vendedor
@@ -174,29 +176,29 @@ void liberarMemoria(Vendedores *raiz){
     free(raiz);
 }
 
-//Função que irar imprimir os vendedores
-void imprimirVendedores(Vendedores *raiz){
-    if(raiz == NULL){
+// Função que irá imprimir os vendedores e suas respectivas frutas
+void imprimirVendedoresEFrutas(Vendedores *raiz) {
+    if (raiz == NULL) {
         return;
     }
-    imprimirVendedores(raiz->esq);
+    // Limpa a tela antes de imprimir
+    system("clear"); // Use "clear" se estiver no Linux ou macOS
+
+    imprimirVendedoresEFrutas(raiz->esq);
+
     printf("Nome: %s\n", raiz->nome);
     printf("CPF: %s\n", raiz->cpf);
-    imprimirVendedores(raiz->dir);
-}
 
-//Função que irar imprimir as frutas
-void imprimirFrutas(Vendedores *raiz, char cpf[]){
-    Vendedores *vendedor = buscarVendedor(raiz, cpf);
-    if(vendedor == NULL){
-        return;
-    }
-    for(int i = 0; i < 50; i++){
-        if(vendedor->frutas[i].quantidade != 0){
-            printf("Nome: %s\n", vendedor->frutas[i].nome);
-            printf("Quantidade: %d\n", vendedor->frutas[i].quantidade);
-            printf("Preço: %.2f\n", vendedor->frutas[i].preco);
+    // Imprime as frutas associadas ao vendedor
+    printf("Frutas do vendedor:\n");
+    for (int i = 0; i < 50; i++) {
+        if (strlen(raiz->frutas[i].nome) > 0 && raiz->frutas[i].quantidade > 0) {
+            printf("\tNome: %s\n", raiz->frutas[i].nome);
+            printf("\tQuantidade: %d\n", raiz->frutas[i].quantidade);
+            printf("\tPreço: %.2f\n", raiz->frutas[i].preco);
         }
     }
-}
+    printf("------------------------\n");
 
+    imprimirVendedoresEFrutas(raiz->dir);
+}

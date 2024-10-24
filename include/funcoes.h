@@ -52,11 +52,5 @@ Vendedores *modificarFruta(Vendedores *raiz, char cpf[], char nome[], int quanti
 //Função que irar liberar a memoria alocada
 void liberarMemoria(Vendedores *raiz);
 
-//Função que irar imprimir os vendedores
-void imprimirVendedores(Vendedores *raiz);
-
-//Função que irar imprimir as frutas
-void imprimirFrutas(Vendedores *raiz, char cpf[]);
-
-
-
+//Função que irar imprimir os vendedores e suas frutas
+void imprimirVendedoresEFrutas(Vendedores *raiz);
