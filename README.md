@@ -14,6 +14,12 @@
 
 ![C](https://img.shields.io/badge/C-007ACC?style=for-the-badge&logo=C&logoColor=white)&nbsp;
 
+## Tecnologias utilizadas no projeto
+
+-Heap
+-Hash
+-Arvores Binarias
+
 ### Sobre o projeto
 
 Projete um sistema na linguagem C para gerenciamento de uma barraca de frutas. Seu sistema deve ser capaz de manipular barracas e vendedores.
